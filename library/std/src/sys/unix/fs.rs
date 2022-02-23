@@ -1528,14 +1528,14 @@ pub fn chroot(dir: &Path) -> io::Result<()> {
 
 pub use remove_dir_impl::remove_dir_all;
 
-// Fallback for REDOX and ESP-IDF
-#[cfg(any(target_os = "redox", target_os = "espidf"))]
+// Fallback for REDOX, ESP-IDF, and Horizon
+#[cfg(any(target_os = "redox", target_os = "espidf", target_os = "horizon"))]
 mod remove_dir_impl {
     pub use crate::sys_common::fs::remove_dir_all;
 }
 
 // Modern implementation using openat(), unlinkat() and fdopendir()
-#[cfg(not(any(target_os = "redox", target_os = "espidf")))]
+#[cfg(not(any(target_os = "redox", target_os = "espidf", target_os = "horizon")))]
 mod remove_dir_impl {
     use super::{cstr, lstat, Dir, DirEntry, InnerReadDir, ReadDir};
     use crate::ffi::CStr;
